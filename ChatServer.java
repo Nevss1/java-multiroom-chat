@@ -20,7 +20,6 @@ public class ChatServer {
 
     public void startServer() throws IOException { // Este método NÃO é estático
         try(ServerSocket server = new ServerSocket(12345)) {
-
             System.out.println("Servidor iniciado na porta 12345...");
                 
             while (true) {
