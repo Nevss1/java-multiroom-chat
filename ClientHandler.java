@@ -61,14 +61,8 @@ public class ClientHandler implements Runnable {
                     sendMessage("Comando inválido, favor usar /login para iniciar.");
                 }
             }
-            /* 
-            String inputNome = in.readLine();
-            this.userInfo = new UserInfo(inputNome);
-            synchronized (clients) {
-                clients.put(this.userInfo.getUserName(), this);
-            }
-            broadcast(this.userInfo.getUserName() + " entrou no chat."); // envia a mensagem pra todos clientes
-            */
+
+
             String msg;
             while ((msg = in.readLine()) != null) {
                 // Pra ver depois (KADU)
@@ -81,15 +75,19 @@ public class ClientHandler implements Runnable {
                     broadcast(this.userInfo.getUserName() + ": " + msg);
                 }
             }
+
         } catch (IOException e) {
             System.out.println("Erro com o usuário: " + this.userInfo.getUserName());
+
         } finally {
             try {
                 socket.close();
+
             } catch (IOException e) {}
             synchronized (clients) {
                 clients.remove(this.userInfo.getUserName());
             }
+            
             broadcast(this.userInfo.getUserName() + " saiu do chat.");
         }
     }

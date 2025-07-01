@@ -72,7 +72,7 @@ public class ChatServer {
                 clientHandler.sendMessage(lista);
                 break;
             
-                case "criarSala":
+            case "criarSala":
                     if(!clientHandler.getUserInfo().IsAdmin()) {
                         clientHandler.sendMessage("Apenas administradores podem criar salas");
                         break;
@@ -99,25 +99,38 @@ public class ChatServer {
                     clientHandler.sendMessage("Sala '" + nomeSala + "' criada com sucesso");
                     break;
                 
-                case "entrarNaSala":
-                  Sala sala = salas.get(argumentos.trim());
+            case "entrarNaSala":
+                Sala sala = salas.get(argumentos.trim());
                   
-                  if(sala == null) {
+                if(sala == null) {
                     clientHandler.sendMessage("Sala não encontrada");
                     break;
-                  }
+                }
 
                   
 
-                  Sala salaAtual = clientHandler.getSalaAtual();
-                  if(salaAtual != null) {
+                Sala salaAtual = clientHandler.getSalaAtual();
+                if(salaAtual != null) {
                     salaAtual.sair(clientHandler);
-                  }
+                }
 
-                  sala.entrar(clientHandler);
-                  clientHandler.setSalaAtual(sala);
-                  clientHandler.sendMessage("Você entrou na sala" + sala.getNome());
+                sala.entrar(clientHandler);
+                clientHandler.setSalaAtual(sala);
+                clientHandler.sendMessage("Você entrou na sala" + sala.getNome());
+                break;
+                
+            case "sairDaSala":
+                salaAtual = clientHandler.getSalaAtual();
 
+                if(salaAtual != null) {
+                    salaAtual.sair(clientHandler);
+                    clientHandler.setSalaAtual(null); // <- adiciona isso
+                    clientHandler.sendMessage("Saiu da sala");
+                } else {
+                    clientHandler.sendMessage("Não está em nenhuma sala");
+                }
+
+                break;
         }
     }
 
