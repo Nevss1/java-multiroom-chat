@@ -11,12 +11,12 @@ public class Sala {
 
     public synchronized void entrar(ClientHandler cliente) {
         clientes.add(cliente);
-        broadcast("[" + nome + "] " + cliente.getUserName() + " entrou na sala.");
+        broadcast("[" + nome + "] " + cliente.getUserInfo().getUserName() + " entrou na sala.");
     }
 
     public synchronized void sair(ClientHandler cliente) {
         clientes.remove(cliente);
-        broadcast("[" + nome + "] " + cliente.getUserName() + " saiu da sala.");
+        broadcast("[" + nome + "] " + cliente.getUserInfo().getUserName() + " saiu da sala.");
     }
 
     public synchronized void broadcast(String msg) {
