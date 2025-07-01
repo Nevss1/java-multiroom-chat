@@ -136,6 +136,12 @@ public class ChatServer {
                     clientHandler.sendMessage("Nao esta em nenhuma sala");
                 }
                 break;
+
+            case "help":
+                String mensagemAjuda = Utils.gerarMensagemAjuda(clientHandler.getUserInfo().IsAdmin());
+                clientHandler.sendMessage(mensagemAjuda);
+                break;
+                
             default:
                 clientHandler.sendMessage("Comando desconhecido. Use /help para ajuda.");
                 break;
