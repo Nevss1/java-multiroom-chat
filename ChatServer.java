@@ -5,7 +5,6 @@ import java.util.*;
 public class ChatServer {
     // Map: nome do usuário -> ClientHandler
     private static Map<String, ClientHandler> clients = new HashMap<>();
-    // private Set<String> nomesAdms = new HashSet<>(); aparentemente agora vai ser inutil
 
     // Map: nome da sala -> Sala
     private static Map<String, Sala> salas = new HashMap<>();
@@ -111,7 +110,7 @@ public class ChatServer {
 
                 sala.entrar(clientHandler);
                 clientHandler.getUserInfo().setSalaAtual(sala);
-                clientHandler.sendMessage("Voceh entrou em " + sala.getNome());    
+                clientHandler.sendMessage("Voceh entrou em " + sala.getNome());   
                 break;
 
             case "sair":
@@ -138,7 +137,10 @@ public class ChatServer {
                         salaAtual = clientHandler.getUserInfo().getSalaAtual();
                         if(clients.get(nomeExpulsado) != null){
                             salaAtual.sair(clients.get(nomeExpulsado));
+                            clients.get(nomeExpulsado).getUserInfo().setSalaAtual(null);
                             clientHandler.sendMessage(nomeExpulsado + " foi expulso da sala.");
+                            ClientHandler userExpulsado = clients.get(nomeExpulsado);
+                            userExpulsado.sendMessage("Voce foi expulso da sala.");
                             break;
                         } else {
                             clientHandler.sendMessage("Usuario nao encontrado.");
@@ -161,21 +163,62 @@ public class ChatServer {
                     break; 
                 } else {
                     clientHandler.sendMessage("Entre em uma sala primeiro.");
+                    break;
                 }
 
             case "help": 
                 String mensagemAjuda = Utils.gerarMensagemAjuda(clientHandler.getUserInfo().IsAdmin());
                 clientHandler.sendMessage(mensagemAjuda);
                 break;
-            default:
 
+            case "encerrar":
+                if (clientHandler.getUserInfo().IsAdmin()) {
+                    if(salas != null){
+                        nomeSala = argumentos.trim();
+                        if(salas.containsKey(nomeSala)){
+                            Sala salaRemovida = salas.get(nomeSala);
+                            salaRemovida.broadcast("Sala sendo removida...");
+                            ArrayList<ClientHandler> membrosParaRemover = new ArrayList<>(salaRemovida.getMembers());
+                            for (ClientHandler c : membrosParaRemover){
+                                c.getUserInfo().getSalaAtual().sair(c);
+                                c.getUserInfo().setSalaAtual(null);
+                                c.sendMessage("Sala removida, voce foi expulso da sala.");
+                            }
+                            salas.remove(nomeSala);
+                            clientHandler.sendMessage("Sala removida.");
+                            break;
+                        } else {
+                            clientHandler.sendMessage("Sala nao encontrada.");
+                            break;
+                        }
+                    } else {
+                        clientHandler.sendMessage("Nao ha nenhuma sala criada.");
+                        break;
+                    }
+                } else {
+                    clientHandler.sendMessage("Voce precisa ser admin para utilizar essa funcao");
+                }
+            
+            case "sairServidor":
+                clientHandler.sendMessage("Você encerrou sua conexão com o servidor.");
+                try {
+                    clientHandler.sendMessage("Desconectando...");
+                    clientHandler.getSocket().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            default:
+                clientHandler.sendMessage("Comando desconhecido: /" + comando + ". Digite /help para ver os comandos disponíveis.");
+                break;                
         }
     }
 
     public synchronized String listarSalas(boolean adm) {
         if(salas.isEmpty()) {
             if(adm) {
-                return "Ola admin, crie uma sala (/criarSala)";
+                return "Ola admin, crie uma sala (/criar)";
             }
             return "Nenhuma sala criada ainda. Aguarde um administrador.";
         }

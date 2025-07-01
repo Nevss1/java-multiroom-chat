@@ -42,4 +42,9 @@ public class Sala {
     public synchronized boolean contemCliente(ClientHandler c) {
         return clientes.contains(c);
     }
+
+    public synchronized Set<ClientHandler> getMembers(){
+        return clientes;
+    }
+
 }

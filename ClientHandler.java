@@ -31,12 +31,8 @@ public class ClientHandler implements Runnable {
         return userInfo;
     }
 
-    public void setSalaAtual(Sala sala) {
-        this.salaAtual = sala;
-    }
-
-    public Sala getSalaAtual() {
-        return salaAtual;
+    public Socket getSocket(){
+        return socket;
     }
 
     public void run() {
@@ -82,16 +78,23 @@ public class ClientHandler implements Runnable {
             synchronized (clients) {
                 clients.remove(this.userInfo.getUserName());
             }
-            broadcast(this.userInfo.getUserName() + " saiu do chat.");
+            broadcast(this.userInfo.getUserName() + " saiu do servidor.");
         }
     }
 
     private void broadcast(String msg) {
-        if(salaAtual != null) {
+        if (salaAtual != null) {
             salaAtual.broadcast("[" + salaAtual.getNome() + "] " + msg, this);
-        } else{
-            sendMessage("Você nao tah em nenhuma sala, Use /entrarNaSala <nome> para entrar.");
+        } else {
+            synchronized (clients) {
+                for (ClientHandler cliente : clients.values()) {
+                    if (cliente != this) {
+                        cliente.sendMessage(msg);
+                    }
+                }
+            }
         }
+        System.out.println(msg);
     }
 
     public void sendMessage(String msg){
