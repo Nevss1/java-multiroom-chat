@@ -163,6 +163,11 @@ public class ChatServer {
                 } else {
                     clientHandler.sendMessage("Entre em uma sala primeiro.");
                 }
+
+            case "help": 
+                String mensagemAjuda = Utils.gerarMensagemAjuda(clientHandler.getUserInfo().IsAdmin());
+                clientHandler.sendMessage(mensagemAjuda);
+                break;
             default:
                 clientHandler.sendMessage("Comando desconhecido: /" + comando + ". Digite /help para ver os comandos disponíveis.");
                 break;
