@@ -67,17 +67,6 @@ public class ChatServer {
                 clientHandler.sendMessage(lista);
                 break;
 
-            case "salas":
-                if (salas.isEmpty()) {
-                    clientHandler.sendMessage("Nenhuma sala criada ainda.");
-                } else {
-                    StringBuilder sb = new StringBuilder("Salas disponiveis:\n");
-                    for (Sala s : salas.values()) {
-                        sb.append(" - ").append(s.getNome()).append("\n");
-                    }
-                    clientHandler.sendMessage((sb.toString()));
-                }
-                break;
             case "criar":
                 if (!clientHandler.getUserInfo().IsAdmin()) {
                     clientHandler.sendMessage("Apenas administradores podem criar salas.");
@@ -125,7 +114,7 @@ public class ChatServer {
                 clientHandler.sendMessage("Voceh entrou em " + sala.getNome());    
                 break;
 
-            case "sairDaSala":
+            case "sair":
                 salaAtual = clientHandler.getUserInfo().getSalaAtual();
 
                 if (salaAtual != null) {
@@ -173,6 +162,8 @@ public class ChatServer {
                 } else {
                     clientHandler.sendMessage("Entre em uma sala primeiro.");
                 }
+            default:
+
         }
     }
 
