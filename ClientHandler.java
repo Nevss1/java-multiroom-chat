@@ -75,7 +75,7 @@ public class ClientHandler implements Runnable {
         try {
             switch (comando){
                 case "/salas":
-                    listarSalas(); // função as er implementada
+                    listarSalas(); // função a ser implementada
                     break;
                 case "/entrar":
                     entrarSala(partes[1].trim()); // entra na sala específica

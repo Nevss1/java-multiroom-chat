@@ -17,17 +17,20 @@ public class ChatServer {
     private static Map<String, Sala> salas = new HashMap<>();
 
     public void startServer() throws IOException { // Este método NÃO é estático
-        ServerSocket server = new ServerSocket(12345); // Porta de escuta
-        System.out.println("Servidor iniciado na porta 12345...");
+        // Porta de escuta
+        try(ServerSocket server = new ServerSocket(12345)) {
+            System.out.println("Servidor iniciado na porta 12345...");
 
-        while (true) {
-            Socket socket = server.accept();
-            System.out.println("Novo cliente conectado!");
-            // Agora 'this' se refere à instância do ChatServer que está executando startServer()
-            ClientHandler handler = new ClientHandler(socket, this, clients); // 'this' agora é válido
-            new Thread(handler).start();
-        }
+            while (true) {
+                Socket socket = server.accept();
+                System.out.println("Novo cliente conectado!");
+                // Agora 'this' se refere à instância do ChatServer que está executando startServer()
+                ClientHandler handler = new ClientHandler(socket, this, clients); // 'this' agora é válido
+                new Thread(handler).start();
+            }
     }
+
+}
 
     
     public static void main(String[] args) throws IOException {

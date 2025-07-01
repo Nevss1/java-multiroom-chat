@@ -10,10 +10,15 @@ import java.net.*;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException {
+       try(
+
         Socket socket = new Socket("26.159.125.196", 12345); // Substitua pelo IP do Radmin do servidor
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+       ) {
+
 
         Thread receive = new Thread(() -> {
             String msg;
@@ -32,5 +37,10 @@ public class ChatClient {
             String msg = input.readLine();
             out.println(msg);
         }
+       } catch (IOException err) {
+            System.out.println("Erro: " + err);
+       }
+
+        
     }
 }
