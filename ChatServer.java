@@ -64,7 +64,7 @@ public class ChatServer {
                 clients.put(userName, clientHandler);
                 clientHandler.sendMessage("Bem vindo, " + userName + "!");
                 if (IsAdmin){
-                    clientHandler.sendMessage("Permissões de administrador concedidas!");
+                    clientHandler.sendMessage("Permissoes de administrador concedidas!");
                 }
 
                 //Enviar listas de salas
@@ -81,12 +81,12 @@ public class ChatServer {
                 String nomeSala = argumentos.trim();
 
                 if(nomeSala.isEmpty()) {
-                    clientHandler.sendMessage("Nome da sala não pode ser vazio.");
+                    clientHandler.sendMessage("Nome da sala nao pode ser vazio.");
                     break;
                 }
 
                 if(salas.containsKey(nomeSala)) {
-                    clientHandler.sendMessage("Já existe uma sala com ele nome.");
+                    clientHandler.sendMessage("Jah existe uma sala com ele nome.");
                     break;
                 }
 
@@ -103,7 +103,7 @@ public class ChatServer {
                 Sala sala = salas.get(argumentos.trim());
                 
                 if(sala == null) {
-                clientHandler.sendMessage("Sala não encontrada.");
+                clientHandler.sendMessage("Sala nao encontrada.");
                 break;
                 }
 
@@ -116,7 +116,7 @@ public class ChatServer {
 
                 sala.entrar(clientHandler);
                 clientHandler.setSalaAtual(sala);
-                clientHandler.sendMessage("Você entrou na sala" + sala.getNome());    
+                clientHandler.sendMessage("Voceh entrou na sala" + sala.getNome());    
             case "sairDaSala":
                 salaAtual = clientHandler.getSalaAtual();
 
@@ -125,7 +125,7 @@ public class ChatServer {
                     clientHandler.setSalaAtual(null); // <- adiciona isso
                     clientHandler.sendMessage("Saiu da sala");
                 } else {
-                    clientHandler.sendMessage("Não está em nenhuma sala");
+                    clientHandler.sendMessage("Não estah em nenhuma sala");
                 }
                 break;
         }
@@ -134,7 +134,7 @@ public class ChatServer {
     public synchronized String listarSalas(boolean adm) {
         if(salas.isEmpty()) {
             if(adm) {
-                return "Olá admin, crie uma sala (/criarSala)";
+                return "Olah admin, crie uma sala (/criarSala)";
             }
             return "Nenhuma sala criada ainda. Aguarde um administrador.";
         }

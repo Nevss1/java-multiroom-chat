@@ -58,7 +58,7 @@ public class ClientHandler implements Runnable {
                         sendMessage("Login falhou, favor tentar novamente");
                     }
                 } else {
-                    sendMessage("Comando inválido, favor usar /login para iniciar.");
+                    sendMessage("Comando invalido, favor usar /login para iniciar.");
                 }
             }
             
@@ -70,11 +70,11 @@ public class ClientHandler implements Runnable {
                     String argumentos = partes.length > 1 ? partes[1] : "";
                     chatServer.processarComando(this, comando, argumentos);
                 } else {
-                    sendMessage("Mensagem inválida, favor digitar um comando válido. (Para informações: /help)");
+                    sendMessage("Mensagem invalida, favor digitar um comando valido. (Para informaçoes: /help)");
                 }
             }
         } catch (IOException e) {
-            System.out.println("Erro com o usuário: " + this.userInfo.getUserName());
+            System.out.println("Erro com o usuario: " + this.userInfo.getUserName());
         } finally {
             try {
                 socket.close();
@@ -90,7 +90,7 @@ public class ClientHandler implements Runnable {
         if(salaAtual != null) {
             salaAtual.broadcast("[" + salaAtual.getNome() + "] " + msg, this);
         } else{
-            sendMessage("Você não tá em nenhuma sala, Use /entrarNaSala <nome> para entrar.");
+            sendMessage("Você nao tah em nenhuma sala, Use /entrarNaSala <nome> para entrar.");
         }
     }
 
