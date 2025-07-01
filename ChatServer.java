@@ -162,6 +162,11 @@ public class ChatServer {
                 } else {
                     clientHandler.sendMessage("Entre em uma sala primeiro.");
                 }
+
+            case "help": 
+                String mensagemAjuda = Utils.gerarMensagemAjuda(clientHandler.getUserInfo().IsAdmin());
+                clientHandler.sendMessage(mensagemAjuda);
+                break;
             default:
 
         }
