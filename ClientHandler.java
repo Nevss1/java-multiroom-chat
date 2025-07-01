@@ -16,6 +16,7 @@ public class ClientHandler implements Runnable {
     private UserInfo userInfo;
     private Map<String, ClientHandler> clients; // chave é o nome do cliente, valor é o objeto ClientHandler
     private ChatServer chatServer;
+    private Sala salaAtual;
 
     public ClientHandler(Socket socket, ChatServer chatServer,Map<String, ClientHandler> clients) throws IOException {
         this.socket = socket;
@@ -28,6 +29,14 @@ public class ClientHandler implements Runnable {
 
     public UserInfo getUserInfo(){
         return userInfo;
+    }
+
+    public void setSalaAtual(Sala sala) {
+        this.salaAtual = sala;
+    }
+
+    public Sala getSalaAtual() {
+        return salaAtual;
     }
 
     public void run() {
@@ -86,10 +95,10 @@ public class ClientHandler implements Runnable {
     }
 
     private void broadcast(String msg) {
-        synchronized (clients) {
-            for (ClientHandler client : clients.values()) {
-                client.out.println(msg);
-            }
+        if(salaAtual != null) {
+            salaAtual.broadcast("[" + salaAtual.getNome() + "]" + msg, this);
+        } else{
+            sendMessage("Você não tá em nenhuma sala, Use /entrarSala <nome> para entrar.");
         }
     }
 
@@ -101,29 +110,4 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    /*
-    // Processar comando?
-    private void processarComando(String cmd) {
-        String[] partes = cmd.split(" ", 2);
-        String comando = partes[0].toLowerCase()
-        
-        try {
-            switch (comando){
-                case "/salas":
-                listarSalas(); // função as er implementada
-                break;
-                case "/entrar":
-                entrarSala(partes[1].trim()); // entra na sala específica
-                break;
-                case "/sair":
-                sairSala();
-                break;
-                case "/criar":
-                if (isAdmin) { // protótipo criar um atributo booleano
-                criarSala(partes[1].trim());
-            }
-        }
-    }
-}
-    */
 }

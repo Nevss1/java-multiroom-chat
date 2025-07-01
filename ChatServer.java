@@ -66,7 +66,75 @@ public class ChatServer {
                 if (IsAdmin){
                     clientHandler.sendMessage("Permissões de administrador concedidas!");
                 }
+
+                //Enviar listas de salas
+                String lista = listarSalas(IsAdmin);
+                clientHandler.sendMessage(lista);
+                break;
+            
+                case "criarSala":
+                    if(!clientHandler.getUserInfo().IsAdmin()) {
+                        clientHandler.sendMessage("Apenas administradores podem criar salas");
+                        break;
+                    }
+
+                    String nomeSala = argumentos.trim();
+
+                    if(nomeSala.isEmpty()) {
+                        clientHandler.sendMessage("Nome da sala não pode ser vazio");
+                        break;
+                    }
+
+                    if(salas.containsKey(nomeSala)) {
+                        clientHandler.sendMessage("Já existe uma sala com ele nome");
+                        break;
+                    }
+
+                    Sala novaSala = new Sala(nomeSala);
+                    salas.put(nomeSala, novaSala);
+                    //Notificar a nova sala para todos os clientes
+                    for (ClientHandler c : clients.values()) {
+                        c.sendMessage("Nova sala criada: " + nomeSala);
+                    }
+                    clientHandler.sendMessage("Sala '" + nomeSala + "' criada com sucesso");
+                    break;
+                
+                case "entrarNaSala":
+                  Sala sala = salas.get(argumentos.trim());
+                  
+                  if(sala == null) {
+                    clientHandler.sendMessage("Sala não encontrada");
+                    break;
+                  }
+
+                  
+
+                  Sala salaAtual = clientHandler.getSalaAtual();
+                  if(salaAtual != null) {
+                    salaAtual.sair(clientHandler);
+                  }
+
+                  sala.entrar(clientHandler);
+                  clientHandler.setSalaAtual(sala);
+                  clientHandler.sendMessage("Você entrou na sala" + sala.getNome());
+
         }
+    }
+
+    public synchronized String listarSalas(boolean adm) {
+        if(salas.isEmpty()) {
+            if(adm) {
+                return "Olá adm crie uma sala";
+            }
+            return "Nenhuma sala criada ainda. Aguarde um administrador";
+        }
+
+        StringBuilder sb = new StringBuilder("Salas disponiveis: \n");
+        for(String nome : salas.keySet()) {
+            sb.append(" - ").append(nome).append("\n");
+        }
+
+        return sb.toString();
     }
 } 
 

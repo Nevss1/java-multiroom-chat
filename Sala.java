@@ -19,9 +19,19 @@ public class Sala {
         broadcast("[" + nome + "] " + cliente.getUserInfo().getUserName() + " saiu da sala.");
     }
 
+    // Envia para todos da sala
     public synchronized void broadcast(String msg) {
         for (ClientHandler c : clientes) {
             c.sendMessage(msg);
+        }
+    }
+
+    // Envia para todos da sala, exceto quem enviou
+    public synchronized void broadcast(String msg, ClientHandler remetente) {
+        for (ClientHandler c : clientes) {
+            if (c != remetente) {
+                c.sendMessage(msg);
+            }
         }
     }
 
