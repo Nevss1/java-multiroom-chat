@@ -12,9 +12,11 @@ import java.util.*;
 public class ChatServer {
     // Map: nome do usuário -> ClientHandler
     private static Map<String, ClientHandler> clients = new HashMap<>();
+    private Set<String> nomesAdms = new HashSet<>();
 
     // Map: nome da sala -> Sala
     private static Map<String, Sala> salas = new HashMap<>();
+    private static Map<ClientHandler, UserInfo> usuariosConectados = new HashMap<>();
 
     public void startServer() throws IOException { // Este método NÃO é estático
         ServerSocket server = new ServerSocket(12345); // Porta de escuta
@@ -25,10 +27,10 @@ public class ChatServer {
             System.out.println("Novo cliente conectado!");
             // Agora 'this' se refere à instância do ChatServer que está executando startServer()
             ClientHandler handler = new ClientHandler(socket, this, clients); // 'this' agora é válido
+            usuariosConectados.put(handler, handler.getUserInfo());
             new Thread(handler).start();
         }
     }
-
     
     public static void main(String[] args) throws IOException {
         try {
@@ -40,12 +42,20 @@ public class ChatServer {
         }
     }
     
+    public synchronized void processarComando (ClientHandler clientHandler, String comando, String argumentos){};
 
-    // Pra ver depois (KADU)
+    /*
+    METODO DE PROCESSAR COMANDO PRA MEXER DEPOIS
+
     public synchronized void processarComando (ClientHandler clientHandler, String comando, String argumentos){
         switch(comando){
             case "login":
+            clients.put(argumentos, clientHandler);
+            
         }
     }
+    */
+    
+
 }
 
