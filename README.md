@@ -14,8 +14,11 @@ Projeto simples de **chat em Java com múltiplas salas e suporte a administrador
 
 Como rodar?
 - Compile todos os arquivos .java
-javac *.java
+
+  javac *.java
 - Inicie o Servidor
-java ChatServer
+
+  java ChatServer
 - Em outro terminal, ou em outro computador conectado a mesma rede LAN, inicie o Cliente
-java ChatServer
+  
+  java ChatServer
