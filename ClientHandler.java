@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable {
 
     public void run() {
         try {
-            sendMessage("Faça seu login. Ex: /login <username> <se é admin>");
+            sendMessage("Faça seu login. Ex: /login <username> <isAdmin (para o caso de ser admin)> ");
             String primeiraString;
             while((primeiraString = in.readLine()) != null){
                 if(primeiraString.startsWith("/login")){
@@ -61,24 +61,16 @@ public class ClientHandler implements Runnable {
                     sendMessage("Comando inválido, favor usar /login para iniciar.");
                 }
             }
-            /* 
-            String inputNome = in.readLine();
-            this.userInfo = new UserInfo(inputNome);
-            synchronized (clients) {
-                clients.put(this.userInfo.getUserName(), this);
-            }
-            broadcast(this.userInfo.getUserName() + " entrou no chat."); // envia a mensagem pra todos clientes
-            */
+            
             String msg;
             while ((msg = in.readLine()) != null) {
-                // Pra ver depois (KADU)
                 if (msg.startsWith("/")){
                     String[] partes = msg.substring(1).split(" ", 2);
                     String comando = partes[0];
                     String argumentos = partes.length > 1 ? partes[1] : "";
                     chatServer.processarComando(this, comando, argumentos);
                 } else {
-                    broadcast(this.userInfo.getUserName() + ": " + msg);
+                    sendMessage("Mensagem inválida, favor digitar um comando válido. (Para informações: /help)");
                 }
             }
         } catch (IOException e) {
@@ -96,9 +88,9 @@ public class ClientHandler implements Runnable {
 
     private void broadcast(String msg) {
         if(salaAtual != null) {
-            salaAtual.broadcast("[" + salaAtual.getNome() + "]" + msg, this);
+            salaAtual.broadcast("[" + salaAtual.getNome() + "] " + msg, this);
         } else{
-            sendMessage("Você não tá em nenhuma sala, Use /entrarSala <nome> para entrar.");
+            sendMessage("Você não tá em nenhuma sala, Use /entrarNaSala <nome> para entrar.");
         }
     }
 
