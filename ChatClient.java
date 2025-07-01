@@ -10,27 +10,30 @@ import java.net.*;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("26.159.125.196", 12345); // Substitua pelo IP do Radmin do servidor
-        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        try(Socket socket = new Socket("26.159.125.196", 12345)) // Substitua pelo IP do Radmin do servidor 
+        {
 
-        Thread receive = new Thread(() -> {
-            String msg;
-            try {
-                while ((msg = in.readLine()) != null) {
-                    System.out.println(msg);
+            BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            Thread receive = new Thread(() -> {
+                String msg;
+                try {
+                    while ((msg = in.readLine()) != null) {
+                        System.out.println(msg);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         });
 
-        receive.start();
+            receive.start();
 
-        while (true) {
-            String msg = input.readLine();
-            out.println(msg);
+            while (true) {
+                String msg = input.readLine();
+                out.println(msg);
+            }
         }
     }
 }
