@@ -10,7 +10,7 @@ import java.net.*;
 
 public class ChatClient {
     public static void main(String[] args) throws IOException {
-        Socket socket = new Socket("26.159.125.196", 12345); // Substitua pelo IP do Radmin do servidor
+        Socket socket = new Socket("localhost", 12345); // Substitua pelo IP do Radmin do servidor
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));

@@ -21,12 +21,10 @@ public class ChatServer {
     public void startServer() throws IOException { // Este método NÃO é estático
         try(ServerSocket server = new ServerSocket(12345)) {
             System.out.println("Servidor iniciado na porta 12345...");
-                
             while (true) {
             Socket socket = server.accept();
             System.out.println("Novo cliente conectado!");
-            // Agora 'this' se refere à instância do ChatServer que está executando startServer()
-            ClientHandler handler = new ClientHandler(socket, this, clients); // 'this' agora é válido
+            ClientHandler handler = new ClientHandler(socket, this, clients);
             usuariosConectados.put(handler, handler.getUserInfo());
             new Thread(handler).start();
         }
@@ -44,20 +42,31 @@ public class ChatServer {
         }
     }
     
-    public synchronized void processarComando (ClientHandler clientHandler, String comando, String argumentos){};
-
     /*
-    METODO DE PROCESSAR COMANDO PRA MEXER DEPOIS
-
+    */
     public synchronized void processarComando (ClientHandler clientHandler, String comando, String argumentos){
         switch(comando){
             case "login":
-            clients.put(argumentos, clientHandler);
-            
+                String[] partes = argumentos.split(" ", 2);
+                String userName = partes[0];
+                boolean IsAdmin;
+                 if (userName == null || userName.trim().isEmpty()) {
+                    clientHandler.sendMessage("Nome de usuário inválido.");
+                    break; 
+                }
+                clientHandler.getUserInfo().setUserName(userName);
+                if (partes.length > 1 && partes[1].equals("isAdmin")) {
+                    IsAdmin = true;
+                } else {
+                    IsAdmin = false;
+                }
+                clientHandler.getUserInfo().setAdmin(IsAdmin);
+                clients.put(userName, clientHandler);
+                clientHandler.sendMessage("Bem vindo, " + userName + "!");
+                if (IsAdmin){
+                    clientHandler.sendMessage("Permissões de administrador concedidas!");
+                }
         }
     }
-    */
-    
-
-}
+} 
 
