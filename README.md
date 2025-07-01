@@ -21,4 +21,4 @@ Como rodar?
   java ChatServer
 - Em outro terminal, ou em outro computador conectado a mesma rede LAN, inicie o Cliente
   
-  java ChatServer
+  java ChatClient
