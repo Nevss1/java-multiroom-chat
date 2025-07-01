@@ -21,6 +21,7 @@ public class ClientHandler implements Runnable {
         this.socket = socket;
         this.chatServer = chatServer;
         this.clients = clients;
+        this.userInfo = new UserInfo("");
         this.out = new PrintWriter(socket.getOutputStream(), true);
         this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
@@ -31,14 +32,34 @@ public class ClientHandler implements Runnable {
 
     public void run() {
         try {
-            out.println("Digite seu nome:");
+            sendMessage("Faça seu login. Ex: /login <username> <se é admin>");
+            String primeiraString;
+            while((primeiraString = in.readLine()) != null){
+                if(primeiraString.startsWith("/login")){
+                    String[] parts = primeiraString.substring(1).split(" ", 2);
+                    String comando = parts[0]; // Será "login"
+                    String argumentos = parts.length > 1 ? parts[1] : "";
+
+                    chatServer.processarComando(this, comando, argumentos);
+
+                    if (this.userInfo != null && this.userInfo.getUserName() != null && !this.userInfo.getUserName().isEmpty()){
+                        sendMessage("Login realizado com sucesso!");
+                        break;
+                    } else {
+                        sendMessage("Login falhou, favor tentar novamente");
+                    }
+                } else {
+                    sendMessage("Comando inválido, favor usar /login para iniciar.");
+                }
+            }
+            /* 
             String inputNome = in.readLine();
             this.userInfo = new UserInfo(inputNome);
             synchronized (clients) {
                 clients.put(this.userInfo.getUserName(), this);
             }
             broadcast(this.userInfo.getUserName() + " entrou no chat."); // envia a mensagem pra todos clientes
-
+            */
             String msg;
             while ((msg = in.readLine()) != null) {
                 // Pra ver depois (KADU)
