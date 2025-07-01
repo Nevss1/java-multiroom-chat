@@ -5,7 +5,6 @@ import java.util.*;
 public class ChatServer {
     // Map: nome do usuário -> ClientHandler
     private static Map<String, ClientHandler> clients = new HashMap<>();
-    // private Set<String> nomesAdms = new HashSet<>(); aparentemente agora vai ser inutil
 
     // Map: nome da sala -> Sala
     private static Map<String, Sala> salas = new HashMap<>();
@@ -139,6 +138,8 @@ public class ChatServer {
                         if(clients.get(nomeExpulsado) != null){
                             salaAtual.sair(clients.get(nomeExpulsado));
                             clientHandler.sendMessage(nomeExpulsado + " foi expulso da sala.");
+                            ClientHandler userExpulsado = clients.get(nomeExpulsado);
+                            userExpulsado.sendMessage("Voce foi expulso da sala.");
                             break;
                         } else {
                             clientHandler.sendMessage("Usuario nao encontrado.");
@@ -163,14 +164,15 @@ public class ChatServer {
                     clientHandler.sendMessage("Entre em uma sala primeiro.");
                 }
             default:
-
+                clientHandler.sendMessage("Comando desconhecido: /" + comando + ". Digite /help para ver os comandos disponíveis.");
+                break;
         }
     }
 
     public synchronized String listarSalas(boolean adm) {
         if(salas.isEmpty()) {
             if(adm) {
-                return "Ola admin, crie uma sala (/criarSala)";
+                return "Ola admin, crie uma sala (/criar)";
             }
             return "Nenhuma sala criada ainda. Aguarde um administrador.";
         }

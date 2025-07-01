@@ -31,13 +31,15 @@ public class ClientHandler implements Runnable {
         return userInfo;
     }
 
+    /* 
     public void setSalaAtual(Sala sala) {
         this.salaAtual = sala;
     }
-
+    
     public Sala getSalaAtual() {
         return salaAtual;
     }
+    */
 
     public void run() {
         try {
@@ -69,9 +71,12 @@ public class ClientHandler implements Runnable {
                     String comando = partes[0];
                     String argumentos = partes.length > 1 ? partes[1] : "";
                     chatServer.processarComando(this, comando, argumentos);
-                } else {
+                } 
+                /*
+                else {
                     sendMessage("Mensagem invalida, favor digitar um comando valido. (Para informaçoes: /help)");
                 }
+                */
             }
         } catch (IOException e) {
             System.out.println("Erro com o usuario: " + this.userInfo.getUserName());
@@ -90,7 +95,7 @@ public class ClientHandler implements Runnable {
         if(salaAtual != null) {
             salaAtual.broadcast("[" + salaAtual.getNome() + "] " + msg, this);
         } else{
-            sendMessage("Você nao tah em nenhuma sala, Use /entrarNaSala <nome> para entrar.");
+            sendMessage("Você nao tah em nenhuma sala, Use /entrar <nome da sala> para entrar.");
         }
     }
 
