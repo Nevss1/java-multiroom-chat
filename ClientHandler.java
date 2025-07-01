@@ -70,7 +70,11 @@ public class ClientHandler implements Runnable {
                     String argumentos = partes.length > 1 ? partes[1] : "";
                     chatServer.processarComando(this, comando, argumentos);
                 } else {
-                    sendMessage("Mensagem invalida, favor digitar um comando valido. (Para informaçoes: /help)");
+                    if (this.getSalaAtual() != null){
+                        this.getSalaAtual().broadcast(userInfo.getUserName() + ": " + msg, this);
+                    } else {
+                        sendMessage("Você não está em uma sala. Use /entrar <nome> para entrar.");
+                    }
                 }
             }
         } catch (IOException e) {
