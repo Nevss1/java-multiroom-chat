@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable {
 
     public void run() {
         try {
-            sendMessage("Faça seu login. Ex: /login <username> <isAdmin (para o caso de ser admin)> ");
+            sendMessage("Faca seu login. Ex: /login <username> <isAdmin (para o caso de ser admin)> ");
             String primeiraString;
             while((primeiraString = in.readLine()) != null){
                 if(primeiraString.startsWith("/login")){
