@@ -2,7 +2,7 @@
 public class UserInfo{
     private String userName;
     private boolean isAdmin;
-    private String salaAtual;
+    private Sala salaAtual;
 
     public UserInfo (String userName){
         this.setUserName(userName);
@@ -24,10 +24,10 @@ public class UserInfo{
         isAdmin = admin;
     }
 
-    public String getSalaAtual() {
+    public Sala getSalaAtual() {
         return this.salaAtual;
     }
-    public void setCurrentRoomName (String salaAtual){
+    public void setSalaAtual (Sala salaAtual){
         this.salaAtual = salaAtual;
     }
 }
