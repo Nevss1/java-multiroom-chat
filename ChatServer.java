@@ -117,6 +117,17 @@ public class ChatServer {
                 sala.entrar(clientHandler);
                 clientHandler.setSalaAtual(sala);
                 clientHandler.sendMessage("Você entrou na sala" + sala.getNome());    
+            case "sairDaSala":
+                salaAtual = clientHandler.getSalaAtual();
+
+                if(salaAtual != null) {
+                    salaAtual.sair(clientHandler);
+                    clientHandler.setSalaAtual(null); // <- adiciona isso
+                    clientHandler.sendMessage("Saiu da sala");
+                } else {
+                    clientHandler.sendMessage("Não está em nenhuma sala");
+                }
+                break;
         }
     }
 
